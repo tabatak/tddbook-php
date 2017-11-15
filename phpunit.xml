@@ -1,6 +1,15 @@
-<phpunit colors="true" forceCoversAnnotation="false" verbose="true">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
   <testsuites>
-    <testsuite name="php-test">
+    <testsuite name="tddbook-tests">
       <directory>./part1</directory>
     </testsuite>
   </testsuites>
