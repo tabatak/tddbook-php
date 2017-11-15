@@ -1,4 +1,4 @@
-PHP := PHP
+PHP := php
 COMPOSER := composer
 
 all: install test
