@@ -11,6 +11,7 @@ class MoneyTest extends TestCase
     {
         $five = new Dollar(5);
 
+        // extendsしてequalsメソッドを実装して、assertEquals(objA, objB)ってした方がいいんだろうな
         $this->assertTrue((new Dollar(10))->equals($five->times(2)));
         $this->assertTrue((new Dollar(15))->equals($five->times(3)));
     }
