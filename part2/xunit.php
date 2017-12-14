@@ -28,7 +28,7 @@ class WasRun extends TestCase
 
     public function testMethod(): void
     {
-        // $this->wasRun = true;
+        $this->wasRun = true;
     }
 
     public function wasRun(): bool
