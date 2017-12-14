@@ -17,5 +17,5 @@ test_part1:
 .PHONY: test_part1
 
 test_part2:
-	$(PHP) ./part2/xunit.php
+	$(PHP) -d zend.assertions=1 -d assert.exception=1 ./part2/xunit.php
 .PHONY: test_part2
