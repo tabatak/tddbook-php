@@ -25,7 +25,11 @@ class TestCase
         $result = new TestResult();
         $result->testStarted();
         $this->setUp();
-        call_user_func([$this, $this->name]);
+        try{
+            call_user_func([$this, $this->name]);
+        }catch(Exception $e){
+            $result->testFailed();
+        }
         $this->tearDown();
         return $result;
     }
@@ -66,10 +70,12 @@ class WasRun extends TestCase
 class TestResult
 {
     private $runCount;
+    private $errorCount;
 
     public function __construct()
     {
         $this->runCount = 0;
+        $this->errorCount = 0;
     }
 
     public function testStarted(): void
@@ -77,9 +83,14 @@ class TestResult
         $this->runCount += 1;
     }
 
+    public function testFailed(): void
+    {
+        $this->errorCount += 1;
+    }
+
     public function summary(): string
     {
-        return sprintf('%d run, 0 failed', $this->runCount);
+        return sprintf('%d run, %d failed', $this->runCount, $this->errorCount);
     }
 }
 
@@ -105,8 +116,18 @@ class TestCaseTest extends TestCase
         $result = $test->run();
         assert('1 run, 1 failed' == $result->summary());
     }
+
+    public function testFailedResultFormatting(): void
+    {
+        // TestResult単独のテスト
+        $result = new TestResult();
+        $result->testStarted();
+        $result->testFailed();
+        assert('1 run, 1 failed' == $result->summary());
+    }
 }
 
-(new TestCaseTest('testTemplateMethod'))->run();
-(new TestCaseTest('testResult'))->run();
-// (new TestCaseTest('testFailedResult'))->run();
+printf("%s\n", (new TestCaseTest('testTemplateMethod'))->run()->summary());
+printf("%s\n", (new TestCaseTest('testResult'))->run()->summary());
+printf("%s\n", (new TestCaseTest('testFailedResult'))->run()->summary());
+printf("%s\n", (new TestCaseTest('testFailedResultFormatting'))->run()->summary());
