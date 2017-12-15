@@ -15,68 +15,54 @@ class TestCase
         //pass
     }
 
+    public function tearDown(): void
+    {
+        //pass
+    }
+
     public function run(): void
     {
         $this->setUp();
         call_user_func([$this, $this->name]);
+        $this->tearDown();
     }
 
 }
 
 class WasRun extends TestCase
 {
-    private $wasRun;
-    private $wasSetUp;
-
-    public function __construct(string $name)
-    {
-        //TODO __constructを削除する(chapter19)とwasRun()がコンストラクタと判断されてしまいエラーになる
-        parent::__construct($name);
-    }
+    private $log;
 
     public function setUp(): void
     {
         $this->wasRun = false;
-        $this->wasSetUp = true;
+        $this->log = 'setUp ';
     }
 
     public function testMethod(): void
     {
-        $this->wasRun = true;
+        $this->log .= 'testMethod ';
     }
 
-    public function wasRun(): bool
+    public function tearDown(): void
     {
-        return $this->wasRun;
+        $this->log .= 'tearDown ';
     }
 
-    public function wasSetUp(): bool
+    public function log(): string
     {
-        return $this->wasSetUp;
+        return $this->log;
     }
 }
 
 class TestCaseTest extends TestCase
 {
-    private $test;
-
-    public function setUp(): void
+    public function testTemplateMethod(): void
     {
-        $this->test = new WasRun('testMethod');
-    }
-
-    public function testRunning(): void
-    {
-        $this->test->run();
-        assert($this->test->wasRun());
-    }
-
-    public function testSetUp(): void
-    {
-        $this->test->run();
-        assert($this->test->wasSetUp());
+        $test = new WasRun('testMethod');
+        $test->run();
+        assert('setUp testMethod tearDown ' == $test->log());
     }
 }
 
-(new TestCaseTest('testRunning'))->run();
-(new TestCaseTest('testSetUp'))->run();
+(new TestCaseTest('testTemplateMethod'))->run();
